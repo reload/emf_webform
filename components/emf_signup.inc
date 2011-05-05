@@ -72,7 +72,7 @@ function _webform_render_emf_signup($component, $value = NULL) {
     '#type' => 'checkboxes',
   	'#options' => $lists,
     '#default_value' => $value,
-  	'#title' => $component['name'],
+  	'#title' => ($component['extra']['title_display'] == 'none') ? NULL : $component['name'],
     '#required' => $component['mandatory'],
     '#weight' => $component['weight'],
     '#description'   => _webform_filter_descriptions($component['extra']['description']),

@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * Implementation of hook_webform_component_info().
+ */
+function emf_webform_webform_component_info() {
+  $components = array();
+
+  $components['emf_signup'] = array(
+    'label' => t('E-mail framework list signup'),
+    'description' => t('Checkboxes for signing up to selected lists'),
+    'features' => array(
+      'csv' => TRUE,
+      'email' => TRUE,
+      'email_address' => FALSE,
+      'email_name' => FALSE,
+      'required' => TRUE,
+      'conditional' => TRUE,
+      'group' => FALSE,
+      'attachment' => FALSE,
+    ),
+    'file' => 'components/emf_signup.inc',
+  );
+
+  return $components;
+}
+
+/**
+ * Implementation of hook_webform_submission_insert().
+ */
+function emf_webform_webform_submission_insert($node, $submission) {
+	foreach ($node->webform['components'] as $cid => $component) {
+		if ($component['type'] == 'emf_signup') {
+			//Extract submitted values
+			$lists = array_filter($submission->data[$cid]['value']);
+			//Field containing emails is based on the component configuration
+			$emails = $submission->data[$component['extra']['email_field']]['value'];
+			//TODO Add support for setting additional fields e.g. name when subscribing
+			$fields = array();
+			
+			//Subscribe the entered emails to the selected lists
+			foreach ($emails as $email) {
+				foreach ($lists as $list) {
+					emf_helpers_subscribe($email, $list, $fields);
+				}
+			}
+		}
+	}
+}
+
+/**
+ * Implementation of hook_webform_submission_update().
+ */
+function emf_webform_webform_submission_update($node, $submission) {
+	//For now we do nothing
+	//Consider updating the list subscription if possible
+}
+
+/**
+ * Implementation of hook_webform_submission_delete().
+ */
+function emf_webform_webform_submission_delete($node, $submission) {
+	//For now we do nothing
+	//Consider deleting the list subscription if possible
+}

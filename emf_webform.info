@@ -1,0 +1,6 @@
+name = Webform Integration
+description = Add list subscriptions to webforms.
+core = 6.x
+package = E-mail Marketing Framework
+dependencies[] = emf
+dependencies[] = webform

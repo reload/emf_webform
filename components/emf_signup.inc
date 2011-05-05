@@ -31,7 +31,7 @@ function _webform_edit_emf_signup($component) {
   $form['extra']['lists'] = array(
   	'#type' => 'checkboxes',
     '#title' => t('Lists'),
-		'#options' => _emf_webform_list_options(), 
+		'#options' => $lists, 
     '#default_value' => $component['extra']['lists'],
     '#description' => t('Select the lists submitters should be able to sign up for. Not selecting any lists allows for signup for all lists.'),
     '#weight' => 0,

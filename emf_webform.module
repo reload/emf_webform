@@ -7,7 +7,7 @@ function emf_webform_webform_component_info() {
   $components = array();
 
   $components['emf_signup'] = array(
-    'label' => t('E-mail framework list signup'),
+    'label' => t('E-mail marketing framework list signup'),
     'description' => t('Checkboxes for signing up to selected lists'),
     'features' => array(
       'csv' => TRUE,

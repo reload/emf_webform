@@ -35,8 +35,12 @@ function emf_webform_webform_submission_insert($node, $submission) {
 			$lists = array_filter($submission->data[$cid]['value']);
 			//Field containing emails is based on the component configuration
 			$emails = $submission->data[$component['extra']['email_field']]['value'];
-			//TODO Add support for setting additional fields e.g. name when subscribing
+			
 			$fields = array();
+      
+      if (!empty($submission->data[$component['extra']['name_field']]['value'])) {
+        $fields['name'] = $submission->data[$component['extra']['name_field']]['value'][0];
+      }
 			
 			//Subscribe the entered emails to the selected lists
 			foreach ($emails as $email) {

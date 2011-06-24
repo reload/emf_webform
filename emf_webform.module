@@ -42,7 +42,7 @@ function emf_webform_webform_submission_insert($node, $submission) {
         $fields['name'] = $submission->data[$component['extra']['name_field']]['value'][0];
       }
       
-      $custom_fields = array_keys($component['extra']['custom_fields']);
+      $custom_fields = array_keys(array_filter($component['extra']['custom_fields']));
       foreach ($custom_fields as $field) {
         $fields[$node->webform['components'][$field]['form_key']] = $submission->data[$field]['value'][0];
       }

@@ -67,16 +67,15 @@ function _webform_render_emf_signup($component, $value = NULL) {
 			$lists[$lid] = $list->name_action_clean;
 		}
 	}
-	
+  
   $form_item = array(
     '#type' => 'checkboxes',
   	'#options' => $lists,
-    '#default_value' => $value,
   	'#title' => ($component['extra']['title_display'] == 'none') ? NULL : $component['name'],
     '#required' => $component['mandatory'],
     '#weight' => $component['weight'],
     '#description'   => _webform_filter_descriptions($component['extra']['description']),
-    '#default_value' => $component['value'],
+    '#default_value' => array($component['value']),
     '#prefix' => '<div class="webform-component-'. $component['type'] .'" id="webform-component-'. $component['form_key'] .'">',
     '#suffix' => '</div>',
   );

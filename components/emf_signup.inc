@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Implementation of _webform_defaults_component(). 
+ * Implementation of _webform_defaults_component().
  */
 function _webform_defaults_emf_signup() {
   return array(
@@ -31,7 +31,7 @@ function _webform_edit_emf_signup($component) {
   $form['extra']['lists'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Lists'),
-    '#options' => $lists, 
+    '#options' => $lists,
     '#default_value' => $component['extra']['lists'],
     '#description' => t('Select the lists submitters should be able to sign up for. Not selecting any lists allows for signup for all lists.'),
     '#weight' => 0,
@@ -41,7 +41,7 @@ function _webform_edit_emf_signup($component) {
   $email_fields = array();
   $name_fields = array();
   $other_fields = array();
-  $result = db_query('SELECT cid, form_key, name, type FROM {webform_component} WHERE type != "emf_signup" AND nid = %d ORDER BY weight, name', $component['nid']);
+  $result = db_query('SELECT cid, form_key, name, type FROM {webform_component} WHERE type <> "emf_signup" AND nid = %d ORDER BY weight, name', $component['nid']);
   while ($c = db_fetch_array($result)) {
     if ($c['type'] == 'email') {
       $email_fields[$c['cid']] = sprintf('%s (%s)', $c['name'], $c['form_key']);
@@ -58,7 +58,7 @@ function _webform_edit_emf_signup($component) {
   $form['extra']['email_field'] = array(
     '#type' => 'radios',
     '#title' => t('Email field'),
-    '#options' => $email_fields, 
+    '#options' => $email_fields,
     '#default_value' => (isset($component['extra']['email_field'])) ? $component['extra']['email_field'] : array_shift(array_keys($email_fields)),
     '#description' => t('Select the field which represents the email which should be signed up'),
     '#weight' => 0,
@@ -68,7 +68,7 @@ function _webform_edit_emf_signup($component) {
   $form['extra']['name_field'] = array(
     '#type' => 'radios',
     '#title' => t('Name field'),
-    '#options' => $name_fields, 
+    '#options' => $name_fields,
     '#default_value' => (isset($component['extra']['name_field'])) ? $component['extra']['name_field'] : array_shift(array_keys($name_fields)),
     '#description' => t('Select the field which represents the name of the user'),
     '#weight' => 0,
@@ -108,7 +108,7 @@ function _webform_render_emf_signup($component, $value = NULL) {
     '#weight' => $component['weight'],
     '#description'   => _webform_filter_descriptions($component['extra']['description']),
     '#default_value' => array($component['value']),
-    '#prefix' => '<div class="webform-component-'. $component['type'] .'" id="webform-component-'. $component['form_key'] .'">',
+    '#prefix' => '<div class="webform-component-' . $component['type'] . '" id="webform-component-' . $component['form_key'] . '">',
     '#suffix' => '</div>',
   );
 
@@ -191,7 +191,7 @@ function _emf_webform_get_list($lid) {
   
   if (!isset($lists)) {
     $lists = emf_db_get_lists();
-  } 
+  }
   
   return $lists[$lid];
 }

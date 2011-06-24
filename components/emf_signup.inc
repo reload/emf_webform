@@ -40,7 +40,8 @@ function _webform_edit_emf_signup($component) {
 	
 	$email_fields = array();
   $name_fields = array();
-	$result = db_query('SELECT cid, form_key, name, type FROM {webform_component} WHERE (type = "email" OR type = "textfield") AND nid = %d ORDER BY weight, name', $component['nid']);
+  $other_fields = array();
+	$result = db_query('SELECT cid, form_key, name, type FROM {webform_component} WHERE type != "emf_signup" AND nid = %d ORDER BY weight, name', $component['nid']);
 	while ($c = db_fetch_array($result)) {
     if ($c['type'] == 'email') {
       $email_fields[$c['cid']] = sprintf('%s (%s)', $c['name'], $c['form_key']);
@@ -48,7 +49,12 @@ function _webform_edit_emf_signup($component) {
     elseif ($c['type'] == 'textfield') {
       $name_fields[$c['cid']] = sprintf('%s (%s)', $c['name'], $c['form_key']);
     }
+    else {
+      $other_fields[$c['cid']] = sprintf('%s (%s)', $c['name'], $c['form_key']);
+    }
 	}
+  $other_fields += $name_fields;
+  
 	$form['extra']['email_field'] = array(
   	'#type' => 'radios',
     '#title' => t('Email field'),
@@ -68,7 +74,17 @@ function _webform_edit_emf_signup($component) {
     '#weight' => 0,
     '#required' => FALSE,
   );
-
+  
+  $form['extra']['custom_fields'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Custom fields'),
+    '#options' => $other_fields,
+    '#default_value' => (isset($component['extra']['custom_fields'])) ? array_keys(array_filter($component['extra']['custom_fields'])) : array_keys($other_fields),
+    '#description' => t('Select which fields should be sent as additional subscriber data'),
+    '#weight' => 0,
+    '#required' => FALSE,
+  );
+  
   return $form;
 }
 

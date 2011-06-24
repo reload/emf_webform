@@ -41,7 +41,12 @@ function emf_webform_webform_submission_insert($node, $submission) {
       if (!empty($submission->data[$component['extra']['name_field']]['value'])) {
         $fields['name'] = $submission->data[$component['extra']['name_field']]['value'][0];
       }
-			
+      
+      $custom_fields = array_keys($component['extra']['custom_fields']);
+      foreach ($custom_fields as $field) {
+        $fields[$node->webform['components'][$field]['form_key']] = $submission->data[$field]['value'][0];
+      }
+      
 			//Subscribe the entered emails to the selected lists
 			foreach ($emails as $email) {
 				foreach ($lists as $list) {

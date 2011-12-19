@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Webform component which supports subscribing to lists when submitting a webform.
+ */
+
+/**
  * Implementation of _webform_defaults_component().
  */
 function _webform_defaults_emf_signup() {
@@ -37,7 +42,7 @@ function _webform_edit_emf_signup($component) {
     '#weight' => 0,
     '#required' => FALSE,
   );
-  
+
   $email_fields = array();
   $name_fields = array();
   $other_fields = array();
@@ -54,7 +59,7 @@ function _webform_edit_emf_signup($component) {
     }
   }
   $other_fields += $name_fields;
-  
+
   $form['extra']['email_field'] = array(
     '#type' => 'radios',
     '#title' => t('Email field'),
@@ -64,7 +69,7 @@ function _webform_edit_emf_signup($component) {
     '#weight' => 0,
     '#required' => TRUE,
   );
-  
+
   $form['extra']['name_field'] = array(
     '#type' => 'radios',
     '#title' => t('Name field'),
@@ -74,7 +79,7 @@ function _webform_edit_emf_signup($component) {
     '#weight' => 0,
     '#required' => FALSE,
   );
-  
+
   $form['extra']['custom_fields'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Custom fields'),
@@ -84,7 +89,7 @@ function _webform_edit_emf_signup($component) {
     '#weight' => 0,
     '#required' => FALSE,
   );
-  
+
   return $form;
 }
 
@@ -99,7 +104,7 @@ function _webform_render_emf_signup($component, $value = NULL) {
       $lists[$lid] = $list->name_action_clean;
     }
   }
-  
+
   $form_item = array(
     '#type' => 'checkboxes',
     '#options' => $lists,
@@ -148,18 +153,18 @@ function _webform_display_emf_signup($component, $value, $format = 'html') {
     '#value' => (array) $value,
     '#webform_component' => $component,
   );
-  
+
 }
 
 function theme_webform_display_emf_signup($element) {
   $component = $element['#webform_component'];
-  
+
   //Get the readable names for the lists
   $items = array_map('_emf_webform_get_list', $element['#value']);
   foreach ($items as &$i) {
     $i = $i->name_clean;
   }
-  
+
   if ($element['#format'] == 'html') {
     $output = count($items) > 1 ? theme('item_list', $items) : (isset($items[0]) ? $items[0] : ' ');
   }
@@ -188,10 +193,10 @@ function _webform_table_emf_signup($component, $value) {
 
 function _emf_webform_get_list($lid) {
   static $lists;
-  
+
   if (!isset($lists)) {
     $lists = emf_db_get_lists();
   }
-  
+
   return $lists[$lid];
 }
